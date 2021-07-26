@@ -75,11 +75,11 @@
                                             <td class="pro-list-img">
                                                 <img src="../files/assets/images/product-list/pro-l1.png" class="img-fluid" alt="tbl">
                                             </td>
+                                            <td>{{$row->pid}}</td>
                                             <td class="pro-name">
                                                 <h6>{{$row->flavour_name}}</h6>
                                                 <span>{{$row->f_description}}</span>
                                             </td>
-                                            <td>$456</td>
                                             <td>
                                                 @if($row->f_status=='active')
                                                 <label class="text-success">In Stock</label>

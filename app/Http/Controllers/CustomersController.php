@@ -46,7 +46,7 @@ class CustomersController extends Controller
         $validate = $request->validate([
             'c_fname' => 'required|string|max:50',
             'c_lname' => 'string|max:50',
-            'c_email' => 'required|email|unique:customers',
+            'c_email' => 'required|email|unique:customers,c_email',
             'c_password' => 'required|string|max:50',
         ], $customMessages);
         $data = new Customer();
@@ -94,21 +94,19 @@ class CustomersController extends Controller
             'c_fname.required' => 'Customer is required field!',
             'c_email.unique' => 'Email address already exists!',
             'c_email.email' => 'Invalid Email',
-            'c_password.required' => 'Password is required field!',
         ];
         $validate = $request->validate([
             'c_fname' => 'required|string|max:50',
             'c_lname' => 'string|max:50',
-            'c_email' => 'required|email|unique:customers,'.$id,
-            'c_password' => 'required|string|max:50',
+            'c_email' => 'required|email|unique:customers,c_email,'.$id,
         ], $customMessages);
+
         $data = Customer::find($id);
         $data->c_fname = $request->post('c_fname');
         $data->c_lname = $request->post('c_lname');
         $data->c_email = $request->post('c_email');
-        $data->c_password = Hash::make($request->post('c_password'));
         $data->save();
-        session()->flash('status', 'Success! Customer added successfully.');
+        session()->flash('status', 'Record updated successfully.');
         return back();
     }
 
