@@ -38,3 +38,4 @@ Route::post('customers/delete/{id}', [CustomersController::class,'destroy']);
 Route::get('orders', [OrdermanagementController::class,'index']);
 Route::post('orders/update/{id}', [OrdermanagementController::class,'update']);
 Route::post('orders/delete/{id}', [OrdermanagementController::class,'destroy']);
+Route::get('orders/invoice/{id}', [OrdermanagementController::class,'getInvoice']);

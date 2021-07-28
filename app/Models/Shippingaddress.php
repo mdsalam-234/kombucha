@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Shippingaddress extends Model
 {
     use HasFactory;
+    public $timestamps = false; 
 }

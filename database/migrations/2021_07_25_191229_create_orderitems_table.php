@@ -17,8 +17,9 @@ class CreateOrderitemsTable extends Migration
             $table->id();
             $table->integer('o_id');
             $table->integer('p_id');
-            $table->string('product_name','100')->nullable();
-            $table->string('price','100')->nullable();
+            $table->string('product_name','100');
+            $table->integer('qty');
+            $table->string('price','100');
             $table->text('p_image')->nullable();
             $table->string('flavour_name','100')->nullable();
             $table->text('f_image')->nullable();

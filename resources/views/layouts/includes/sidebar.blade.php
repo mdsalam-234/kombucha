@@ -15,22 +15,28 @@
                     </li>
                 </ul>
             </li>
-            <li class="">
+            <li class="{{ Request::is('products') ? 'active' : '' }}">
                 <a href="{{url('products')}}">
                     <span class="pcoded-micon"><i class="feather icon-box"></i></span>
-                    <span class="pcoded-mtext">Products</span>
+                    <span class="pcoded-mtext">Product Management</span>
                 </a>
             </li>
-            <li class="">
+            <li class="{{ Request::is('flavours') ? 'active' : '' }}">
                 <a href="{{url('flavours')}}">
                     <span class="pcoded-micon"><i class="feather icon-box"></i></span>
-                    <span class="pcoded-mtext">Flavours</span>
+                    <span class="pcoded-mtext">Flavour Management</span>
                 </a>
             </li>
-            <li class="active">
+            <li class="{{ Request::is('customers') ? 'active' : '' }}">
                 <a href="{{url('customers')}}">
                     <span class="pcoded-micon"><i class="feather icon-users"></i></span>
-                    <span class="pcoded-mtext">Customers</span>
+                    <span class="pcoded-mtext">Customer Management</span>
+                </a>
+            </li>
+            <li class="{{ Request::is('orders') ? 'active' : '' }}">
+                <a href="{{url('orders')}}">
+                    <span class="pcoded-micon"><i class="feather icon-box"></i></span>
+                    <span class="pcoded-mtext">Order Management</span>
                 </a>
             </li>
         </ul>

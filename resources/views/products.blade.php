@@ -73,13 +73,12 @@
                                         @foreach($data as $row)
                                         <tr>
                                             <td class="pro-list-img">
-                                                <img src="../files/assets/images/product-list/pro-l1.png" class="img-fluid" alt="tbl">
+                                                <img src="{{asset($row->p_image)}}" class="img-fluid" alt="tbl">
                                             </td>
                                             <td class="pro-name">
                                                 <h6>{{$row->product_name}}</h6>
-                                                <span>{{$row->p_description}}</span>
                                             </td>
-                                            <td>$456</td>
+                                            <td>₹ {{number_format($row->p_price,2)}}</td>
                                             <td>
                                                 @if($row->p_status=='active')
                                                 <label class="text-success">In Stock</label>
@@ -117,6 +116,14 @@
                                                                     <div class="form-group">
                                                                         <label for="p_image">Image</label>
                                                                         <input type="file" name="p_image" id="p_image" class="form-control">
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="p_status">Stock</label>
+                                                                        <select name="p_status" class="form-control" required>
+                                                                            <option value="" readonly>Select</option>
+                                                                            <option value="active" {{($row->p_status=='active')?'selected':''}}>Stock</option>
+                                                                            <option value="inactive" {{($row->p_status=='inactive')?'selected':''}}>Out of stock</option>
+                                                                        </select>
                                                                     </div>
                                                                     <button type="submit" class="btn btn-warning float-right">Submit</button>
                                                                 </form>
@@ -161,6 +168,7 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                                @include('layouts.pagination')
                                 @endif
                             </div>
                         </div>

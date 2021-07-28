@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Flavour;
+use App\Models\Product;
 class FlavoursController extends Controller
 {
     /**
@@ -13,8 +14,9 @@ class FlavoursController extends Controller
      */
     public function index()
     {
-        $data = Flavour::orderBy('id', 'desc')->paginate(10);
-        return view('flavours',compact('data'));
+        $data = Flavour::with(['product'])->orderBy('pid', 'desc')->paginate(10);
+        $products = Product::select('id','product_name')->where('p_status', 'active')->get();
+        return view('flavours', ['data' => $data, 'products' => $products]);
     }
 
     /**
@@ -50,8 +52,18 @@ class FlavoursController extends Controller
         $data = new Flavour();
         $data->flavour_name = $request->post('flavour_name');
         $data->pid = $request->post('pid');
-        $data->f_image = $request->post('f_image');
         $data->f_description = $request->post('f_description');
+        if ($request->hasFile('f_image')) {
+            $validate = $request->validate([
+                'f_image' => 'required|image|mimes:jpeg,png,jpg,svg|max:512',
+            ]);
+            $image = $request->file('f_image');
+            $new_image_name = date('Ymd') . time() . "." . $image->extension();
+
+            $destination_path = public_path('/assets/images/fimages/');
+            $image->move($destination_path, $new_image_name);
+            $data->f_image = "assets/images/fimages/" . $new_image_name;
+        }
         $data->save();
         session()->flash('status', 'Success! Flavour added successfully.');
         return back();
@@ -101,8 +113,19 @@ class FlavoursController extends Controller
         $data = Flavour::find($id);
         $data->flavour_name = $request->post('flavour_name');
         $data->pid = $request->post('pid');
-        $data->f_image = $request->post('f_image');
         $data->f_description = $request->post('f_description');
+        $data->f_status = $request->post('f_status');
+        if ($request->hasFile('f_image')) {
+            $validate = $request->validate([
+                'f_image' => 'required|image|mimes:jpeg,png,jpg,svg|max:512',
+            ]);
+            $image = $request->file('f_image');
+            $new_image_name = date('Ymd') . time() . "." . $image->extension();
+
+            $destination_path = public_path('/assets/images/fimages/');
+            $image->move($destination_path, $new_image_name);
+            $data->f_image = "assets/images/fimages/" . $new_image_name;
+        }
         $data->save();
         session()->flash('status', 'Record updated successfully.');
         return back();

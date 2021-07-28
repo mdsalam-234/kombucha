@@ -16,7 +16,7 @@ class ProductsController extends Controller
     public function index()
     {
         $data = Product::orderBy('id', 'desc')->paginate(10);
-        return view('products',compact('data'));
+        return view('products', compact('data'));
     }
 
     /**
@@ -26,7 +26,6 @@ class ProductsController extends Controller
      */
     public function create()
     {
-       
     }
 
     /**
@@ -50,8 +49,18 @@ class ProductsController extends Controller
         $data = new Product();
         $data->product_name = $request->post('product_name');
         $data->p_description = $request->post('p_description');
-        $data->p_image = $request->post('p_image');
         $data->p_price = $request->post('p_price');
+        if ($request->hasFile('p_image')) {
+            $validate = $request->validate([
+                'p_image' => 'required|image|mimes:jpeg,png,jpg,svg|max:512',
+            ]);
+            $image = $request->file('p_image');
+            $new_image_name = date('Ymd') . time() . "." . $image->extension();
+
+            $destination_path = public_path('/assets/images/pimages/');
+            $image->move($destination_path, $new_image_name);
+            $data->p_image = "assets/images/pimages/" . $new_image_name;
+        }
         $data->save();
         session()->flash('status', 'Success! Product added successfully.');
         return back();
@@ -95,14 +104,25 @@ class ProductsController extends Controller
             'p_price.numeric' => 'Product price must be numeric!',
         ];
         $validate = $request->validate([
-            'product_name' => 'required|string|max:50|unique:products,product_name,'.$id,
+            'product_name' => 'required|string|max:50|unique:products,product_name,' . $id,
             'p_price' => 'required|numeric',
         ], $customMessages);
         $data = Product::find($id);
         $data->product_name = $request->post('product_name');
         $data->p_description = $request->post('p_description');
-        $data->p_image = $request->post('p_image');
         $data->p_price = $request->post('p_price');
+        $data->p_status = $request->post('p_status');
+        if ($request->hasFile('p_image')) {
+            $validate = $request->validate([
+                'p_image' => 'required|image|mimes:jpeg,png,jpg,svg|max:512',
+            ]);
+            $image = $request->file('p_image');
+            $new_image_name = date('Ymd') . time() . "." . $image->extension();
+
+            $destination_path = public_path('/assets/images/pimages/');
+            $image->move($destination_path, $new_image_name);
+            $data->p_image = "assets/images/pimages/" . $new_image_name;
+        }
         $data->save();
         session()->flash('status', 'Record updated successfully');
         return back();

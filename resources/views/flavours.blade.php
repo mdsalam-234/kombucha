@@ -73,9 +73,9 @@
                                         @foreach($data as $row)
                                         <tr>
                                             <td class="pro-list-img">
-                                                <img src="../files/assets/images/product-list/pro-l1.png" class="img-fluid" alt="tbl">
+                                                <img src="{{asset($row->f_image)}}" class="img-fluid" alt="tbl">
                                             </td>
-                                            <td>{{$row->pid}}</td>
+                                            <td>{{$row->product->product_name}}</td>
                                             <td class="pro-name">
                                                 <h6>{{$row->flavour_name}}</h6>
                                                 <span>{{$row->f_description}}</span>
@@ -108,7 +108,12 @@
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label for="pid">Product</label>
-                                                                        <input type="text" name="pid" value="{{$row->pid}}" id="pid" class="form-control" required>
+                                                                        <select name="pid" class="form-control">
+                                                                        <option value="" disabled selected>Select</option>
+                                                                            @foreach($products as $product)
+                                                                            <option value="{{$product->id}}" {{($product->id==$row->pid?'selected':'')}}>{{$product->product_name}}</option>
+                                                                            @endforeach
+                                                                        </select>
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label for="f_description">Description</label>
@@ -117,6 +122,14 @@
                                                                     <div class="form-group">
                                                                         <label for="f_image">Image</label>
                                                                         <input type="file" name="f_image" id="f_image" class="form-control">
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="f_status">Stock</label>
+                                                                        <select name="f_status" class="form-control" required>
+                                                                            <option value="" readonly>Select</option>
+                                                                            <option value="active" {{($row->f_status=='active')?'selected':''}}>Stock</option>
+                                                                            <option value="inactive" {{($row->f_status=='inactive')?'selected':''}}>Out of stock</option>
+                                                                        </select>
                                                                     </div>
                                                                     <button type="submit" class="btn btn-warning float-right">Submit</button>
                                                                 </form>
@@ -161,6 +174,7 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                                @include('layouts.pagination')
                                 @endif
                             </div>
                         </div>
@@ -192,7 +206,12 @@
                         </div>
                         <div class="form-group">
                             <label for="pid">Product</label>
-                            <input type="text" name="pid" value="{{old('pid')}}" id="pid" class="form-control" required>
+                            <select name="pid" class="form-control">
+                                <option value="" disabled selected>Select</option>
+                                @foreach($products as $product)
+                                <option value="{{$product->id}}" {{($product->id==old('pid')?'selected':'')}}>{{$product->product_name}}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="f_description">Description</label>

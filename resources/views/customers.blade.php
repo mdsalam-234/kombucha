@@ -152,6 +152,7 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                                @include('layouts.pagination')
                                 @endif
                             </div>
                         </div>
